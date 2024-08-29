@@ -15,12 +15,13 @@ export interface IFormulaState {}
 
 export default class Formula extends React.Component<IFormulaProps, IFormulaState> {
     render(): React.ReactNode {
-        const str: Array<string> = []
+        const str: Array<[string, number]> = []
         if (this.props.complexEmotion !== undefined) {
             const f = formulas.filter((v) => v[0] === this.props.complexEmotion)[0]
-            str.push(
+            str.push([
                 `${ML(f[0] as ComplexEmotion, this.props.language)} = ${ML(f[1][0] as Emotion, this.props.language)} + ${ML(f[1][1] as Emotion, this.props.language)}`,
-            )
+                0,
+            ])
         }
         if (this.props.vector !== undefined) {
             const nonZeros = Object.entries(this.props.vector).filter((el) => el[1] !== 0)
@@ -29,28 +30,31 @@ export default class Formula extends React.Component<IFormulaProps, IFormulaStat
                 const fForm = formulas.filter((pair) => pair[1][0] === emList[0] || pair[1][1] === emList[0])
                 const sForm = fForm.filter((pair) => pair[1][0] === emList[1] || pair[1][1] === emList[1])
                 if (sForm.length === 1)
-                    str.push(
+                    str.push([
                         `${ML(sForm[0][0] as ComplexEmotion, this.props.language)} = ${Array.from(emList, (el) => ML(el, this.props.language)).join(' + ')}`,
-                    )
+                        0,
+                    ])
             } else if (nonZeros.length > 2 && this.props.showAllComplexEmotions) {
                 const emList = Array.from(nonZeros, (el) => el[0])
                 while (emList.length > 1) {
-                    const em1 = emList.pop()
-                    for (const em2 of emList) {
+                    const em1 = emList.pop() as Emotion
+                    for (const em2 of emList as [Emotion]) {
                         const fForm = formulas.filter((pair) => pair[1][0] === em1 || pair[1][1] === em1)
                         const sForm = fForm.filter((pair) => pair[1][0] === em2 || pair[1][1] === em2)
                         if (sForm.length === 1)
-                            str.push(
+                            str.push([
                                 `${ML(sForm[0][0] as ComplexEmotion, this.props.language)} = ${ML(em1, this.props.language)} + ${ML(em2, this.props.language)}`,
-                            )
+                                this.props.vector[em1] ** 2 + this.props.vector[em2] ** 2,
+                            ])
                     }
                 }
             }
         }
+        str.sort((a, b) => b[1] - a[1])
         return (
             <div className={this.props.className}>
                 {str.map((s, i) => (
-                    <div key={i}>{this.props.upperCase ? s.toUpperCase() : s}</div>
+                    <div key={i}>{this.props.upperCase ? s[0].toUpperCase() : s[0]}</div>
                 ))}
             </div>
         )
