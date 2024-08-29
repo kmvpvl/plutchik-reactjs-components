@@ -65,7 +65,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
                 <Chart emotion={Emotion.disgust} viewmode='slider' language='ru' />
                 <Chart emotion={Emotion.anger} viewmode='slider' />
                 <Chart emotion={Emotion.anticipation} viewmode='slider' />
-                <Formula vector={this.state.curVector} />
+                <Formula vector={this.state.curVector} showAllComplexEmotions={true}/>
                 <h1>Formula component</h1>
                 <h3>Language=undefined, uppperCase=true</h3>
                 <Formula complexEmotion={ComplexEmotion.curiosity} className='formula-1' upperCase={true} />
