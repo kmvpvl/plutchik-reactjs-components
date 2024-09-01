@@ -86,4 +86,48 @@ export class EmotionVector implements IEmotionVector {
         const v = Object.entries(this as IEmotionVector)
         for (const [i, f] of v) (this as any)[i] = f + (av as any)[i]
     }
+
+    align(): EmotionVector {
+        if (this.joy - this.sadness > 0) {
+            this.joy = this.joy - this.sadness
+            this.sadness = 0
+        } else {
+            this.sadness = this.sadness - this.joy
+            this.joy = 0
+        }
+        if (this.trust - this.disgust > 0) {
+            this.trust = this.trust - this.disgust
+            this.disgust = 0
+        } else {
+            this.disgust = this.disgust - this.trust
+            this.trust = 0
+        }
+        if (this.fear - this.anger > 0) {
+            this.fear = this.fear - this.anger
+            this.anger = 0
+        } else {
+            this.anger = this.anger - this.fear
+            this.fear = 0
+        }
+        if (this.surprise - this.anticipation > 0) {
+            this.surprise = this.surprise - this.anticipation
+            this.anticipation = 0
+        } else {
+            this.anticipation = this.anticipation - this.surprise
+            this.anticipation = 0
+        }
+        return this
+    }
+    norm(): EmotionVector {
+        const arr = Object.entries(this)
+        const v: any = {}
+        Object.assign(v, this)
+        const mx = arr.reduce((pEl, cEl) => (pEl[1] > cEl[1] ? pEl : cEl), [0, -1])[1]
+        for (const el of arr) {
+            v[el[0]] = el[1] / mx
+            v[el[0]] = v[el[0]] < 0.1 ? 0.0 : v[el[0]]
+        }
+        Object.assign(this, v)
+        return this
+    }
 }
