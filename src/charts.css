@@ -1,12 +1,12 @@
 .plutchik-chart-slider {
-    padding: 2px;
+    --padding: 2px;
     max-width: 3em;
 }
 .plutchik-dotted-frame {
     fill: transparent;
-    opacity: 0.5;
-    stroke: var(--plutchik-text-color);
-    stroke-dasharray: 1 1;
+    --opacity: 0.5;
+    --stroke: var(--plutchik-text-color);
+    stroke-dasharray: 1 3;
 }
 .plutchik-emotion-text {
     transform-origin: left bottom;

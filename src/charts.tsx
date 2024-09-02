@@ -110,7 +110,14 @@ export class Chart extends React.Component<IChartProps, IChartState> {
                 style={this.props.onClick ? { cursor: 'pointer' } : {}}
             >
                 {this.props.viewmode === 'chart' ? (
-                    <rect className='plutchik-dotted-frame' x='0.25em' y='0' width='1em' height='100%' />
+                    <rect
+                        className='plutchik-dotted-frame'
+                        x='0.25em'
+                        y='0'
+                        width='1em'
+                        height='100%'
+                        style={{ stroke: `var(--plutchik-${this.props.emotion}-color)` }}
+                    />
                 ) : (
                     <></>
                 )}
