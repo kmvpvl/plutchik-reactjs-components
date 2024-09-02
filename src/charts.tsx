@@ -167,7 +167,7 @@ export class Chart extends React.Component<IChartProps, IChartState> {
 
 interface IChartsProps {
     vector: IEmotionVector
-    label: string
+    label?: string
     onClick?: (emotion: Emotion) => void
     gridArea?: string
 }
@@ -180,8 +180,19 @@ export class Charts extends React.Component<IChartsProps, IChartsState> {
 
     render(): React.ReactNode {
         return (
-            <div className='plutchik-charts-container' style={{ gridArea: this.props.gridArea }}>
-                <div className='plutchik-charts-label'>{this.props.label}</div>
+            <div
+                className='plutchik-charts-container'
+                style={{
+                    gridArea: this.props.gridArea,
+                    padding: this.props.label === undefined ? '0px' : undefined,
+                    borderWidth: this.props.label === undefined ? '0px' : undefined,
+                }}
+            >
+                {this.props.label !== undefined ? (
+                    <div className='plutchik-charts-label'>{this.props.label}</div>
+                ) : (
+                    <></>
+                )}
                 {Object.values(Emotion).map((v, i) => {
                     let val: number | undefined = this.props.vector[v]
                     val = val ? val : 0
